@@ -8,18 +8,18 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, UITextViewDelegate {
 
-    @IBOutlet weak var detailDescriptionLabel: UILabel!
+    @IBOutlet weak var detailDescriptionLabel: UITextView!
 
 
     func configureView() {
         // Update the user interface for the detail item.
-        if let detail = self.detailItem {
+ //       if let detail = self.detailItem {
             if let label = self.detailDescriptionLabel {
-                label.text = detail.description
+                label.text = objects[currentIndex]
             }
-        }
+ //       }
     }
 
     override func viewDidLoad() {
@@ -33,13 +33,31 @@ class DetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    var detailItem: NSDate? {
+    var detailItem: String? {
         didSet {
             // Update the view.
             self.configureView()
         }
     }
+    
+    // new stuff
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        objects[currentIndex] = detailDescriptionLabel.text
+        masterView?.tableView.reloadData()
+    }
+    
+//    override func viewDidDisappear(_ animated: Bool) {
+//        objects[currentIndex] = detailDescriptionLabel.text
+//        print("viewDidDisappear"objects)
+//        masterView?.tableView.reloadData()
+//    }
 
+    func textViewDidChange(_ textView: UITextView) {
+        objects[currentIndex] = detailDescriptionLabel.text
+
+    }
+    
 
 }
 
